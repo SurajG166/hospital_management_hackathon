@@ -3,6 +3,8 @@ from django.db import models
 class Hospital(models.Model):
     name = models.CharField(max_length=50)
     location = models.CharField(max_length=200)
+    username = models.CharField(max_length=20)
+    password = models.CharField(max_length=20)
 
     def __str__(self):
         return self.name
@@ -13,6 +15,8 @@ class Doctor(models.Model):
     specialization = models.CharField(max_length=10)
     contact = models.CharField(max_length=15)
     hospitals = models.ManyToManyField(Hospital, through='Schedule')
+    username = models.CharField(max_length=20)
+    password = models.CharField(max_length=20)
 
     def __str__(self):
         return self.name
@@ -25,6 +29,8 @@ class Patient(models.Model):
     address = models.CharField(max_length=200)
     hospital = models.ForeignKey(Hospital, on_delete=models.CASCADE)
     doctors = models.ManyToManyField(Doctor, through='Report')
+    username = models.CharField(max_length=20)
+    password = models.CharField(max_length=20)
 
     def __str__(self):
         return self.name

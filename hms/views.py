@@ -49,14 +49,14 @@ def validate_login(request):
             return render(request, "login.html", {"debug_string" : debug_string})
 
 
-def patient_home(request, patient_id):
+def patient_home(request, patient_id ):
     patient = get_object_or_404(Patient, id=patient_id)
     return render(request, "patient.html", {"patient": patient})
 
 
-def doctor_home(request, doctor_id):
+def doctor_home(request, doctor_id = 1):
     doctor = get_object_or_404(Doctor, id=doctor_id)
-    return render(request, "patient_home.html", {"doctor": doctor})
+    return render(request, "doctor.html", {"doctor": doctor})
 
 
 def hospital_home(request, hospital_id):

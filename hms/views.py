@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from .models import Hospital, Doctor, Patient
+from .models import Hospital, Doctor, Patient, Schedule
 from .forms import ReportForm
 
 
@@ -56,7 +56,8 @@ def patient_home(request, patient_id):
 
 def doctor_home(request, doctor_id=1):
     doctor = get_object_or_404(Doctor, id=doctor_id)
-    return render(request, "doctor.html", {"doctor": doctor})
+    schedules = Schedule.objects.filter(doctor=doctor)
+    return render(request, "doctor.html", {"doctor": doctor, "schedules": schedules})
 
 
 def hospital_home(request, hospital_id):
@@ -69,7 +70,7 @@ def serve_prescription_form(request, doctor_id):
         form = ReportForm(request.POST)
         if form.is_valid:
             form.save()
-            return redirect('doctor_home',doctor_id = doctor_id )
+            return redirect("doctor_home", doctor_id=doctor_id)
     else:
         form = ReportForm()
     patients = Patient.objects.all()

@@ -27,17 +27,11 @@
                 </div>
             </div>
             <div class="schedule">
-                <h2>Today's Schedule</h2>
-                <ul>
-                    <li><span class="time-slot">9:00 AM - 10:00 AM</span><span class="patient-name">Patient A</span>
+                <h2>Doctor Schedule</h2>
+                <ul>{% for s in schedules%}
+                    <li><span class="time-slot">{{s.schedule}}</span><span class="patient-name">{{s.patient}}</span>
                     </li>
-                    <li><span class="time-slot">10:00 AM - 11:00 AM</span><span class="patient-name">Patient B</span>
-                    </li>
-                    <li><span class="time-slot">11:00 AM - 12:00 PM</span><span class="patient-name">Patient C</span>
-                    </li>
-                    <li><span class="time-slot">1:00 PM - 2:00 PM</span><span class="patient-name">Patient D</span></li>
-                    <li><span class="time-slot">2:00 PM - 3:00 PM</span><span class="patient-name">Patient E</span></li>
-                    <li><span class="time-slot">3:00 PM - 4:00 PM</span><span class="patient-name">Patient F</span></li>
+                    {% endfor %}
                 </ul>
             </div>
         </div>
@@ -45,7 +39,7 @@
             <img src="{% static 'images1/female.avif' %}" alt="Female Doctor">
         </div>
     </div>
-<!-- 
+    <!-- 
     <script>
         function generatePrescriptionLink() {
             alert("Prescription link generated!");

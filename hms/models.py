@@ -52,3 +52,4 @@ class Report(models.Model):
 
     def __str__(self):
         return f"Report for {self.patient.name} by {self.doctor.name} on {self.date}"
+

@@ -10,7 +10,7 @@ class Hospital(models.Model):
 class Doctor(models.Model):
     name = models.CharField(max_length=200)
     age = models.IntegerField()
-    qualification = models.CharField(max_length=10)
+    specialization = models.CharField(max_length=10)
     contact = models.CharField(max_length=15)
     hospitals = models.ManyToManyField(Hospital, through='Schedule')
 

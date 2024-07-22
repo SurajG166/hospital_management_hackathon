@@ -66,6 +66,14 @@ html{
     color: white;
     display: none;
 }
+.login a{
+    color: white;
+    background:var(--secclr);
+    padding: 1.5rem 3rem;
+    font-size: 1.5rem;
+    border-radius: 10px;
+    transition: .5s;
+}
 .emergency a{
     color: white;
     background: #f5080c;

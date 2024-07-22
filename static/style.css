@@ -31,10 +31,11 @@ html{
 .header #logo{
     width: 50px;
 }
-.navbar a{
+
+.navbarmed a{
     color: white;
-    font-size: 1.5rem;
-    margin-left: 2rem;
+    font-size: 3.5rem;
+    margin-left: -17rem;
     position: relative;
   
 }
@@ -64,6 +65,14 @@ html{
     margin-right: 1rem;
     color: white;
     display: none;
+}
+.emergency a{
+    color: white;
+    background: #f5080c;
+    padding: 1.5rem 8rem;
+    font-size: 1.5rem;
+    border-radius: 10px;
+    transition: .5s;
 }
 .icons a{
     color: white;
@@ -353,7 +362,7 @@ html{
     line-height: 1;
 }
 .footer{
-    padding: 6rem 7%;
+    padding: 1rem 7%;
     background: var(--third);
 }
 .main-footer{
@@ -466,8 +475,6 @@ html{
         justify-content: flex-start;
     
     }
-
-
 
 
 }

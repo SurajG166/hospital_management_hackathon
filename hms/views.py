@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from .models import Hospital, Doctor, Patient
+from .forms import ReportForm
 
 
 def serve_home_page(request):
@@ -46,15 +47,15 @@ def validate_login(request):
 
         else:
             messages.error(request, "Invalid login type selected.")
-            return render(request, "login.html", {"debug_string" : debug_string})
+            return render(request, "login.html", {"debug_string": debug_string})
 
 
-def patient_home(request, patient_id ):
+def patient_home(request, patient_id):
     patient = get_object_or_404(Patient, id=patient_id)
     return render(request, "patient.html", {"patient": patient})
 
 
-def doctor_home(request, doctor_id = 1):
+def doctor_home(request, doctor_id=1):
     doctor = get_object_or_404(Doctor, id=doctor_id)
     return render(request, "doctor.html", {"doctor": doctor})
 
@@ -62,3 +63,17 @@ def doctor_home(request, doctor_id = 1):
 def hospital_home(request, hospital_id):
     hospital = get_object_or_404(Hospital, id=hospital_id)
     return render(request, "hospital_admin.html", {"hospital": hospital})
+
+
+def serve_prescription_form(request):
+    if request.method == "POST":
+        form = ReportForm(request.POST)
+        if form.is_valid:
+            form.save()
+            return redirect('doctor_home')
+    else:
+        form = ReportForm()
+    patients = Patient.objects.all()
+    return render(
+        request, "prescription_form.html", {"patients": patients, "form": form}
+    )

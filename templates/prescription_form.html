@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Prescription Form</title>
-    <link rel="stylesheet" href="forms.css">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'forms.css' %}">
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -15,30 +17,29 @@
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <h1>Write Prescription</h1>
-        <form method="post">
+
+        <form action="." method="post">
             {% csrf_token %}
-            <div class="form-group">
-                <label for="patient">Patient:</label>
-                <select name="patient" id="patient" required>
-                    <option value="" disabled selected>Select Patient</option>
-                    {% for patient in patients %}
-                        <option value="{{ patient.id }}">{{ patient.name }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="diagnosis">Diagnosis:</label>
-                <textarea id="diagnosis" name="diagnosis" required></textarea>
-            </div>
-            <div class="form-group">
-                <label for="prescription">Prescription:</label>
-                <textarea id="prescription" name="prescription" required></textarea>
-            </div>
+            <table>
+                {{ form.as_table}}
+            </table>
             <button type="submit">Submit</button>
+            <button type="button" onclick="goBack()">Go Back</button>
         </form>
+
+
+
     </div>
+
+    <script>
+        function goBack() {
+            location.href = 'http://127.0.0.1:8000/doctor_home/';
+        }
+    </script>
 </body>
+
 </html>

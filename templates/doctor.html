@@ -20,7 +20,10 @@
                     {{doctor}}
                 </div>
                 <div class="prescription-link">
-                    <button onclick="generatePrescriptionLink()">Generate Prescription</button>
+                    <form action="{% url 'serve_prescription_form' %}" method="get">
+                        {% csrf_token %}
+                        <button type="submit">Generate Prescription</button>
+                    </form>
                 </div>
             </div>
             <div class="schedule">
@@ -42,12 +45,12 @@
             <img src="{% static 'images1/female.avif' %}" alt="Female Doctor">
         </div>
     </div>
-
+<!-- 
     <script>
         function generatePrescriptionLink() {
             alert("Prescription link generated!");
         }
-    </script>
+    </script> -->
 </body>
 
 </html>

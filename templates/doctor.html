@@ -5,19 +5,44 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Doctor Interface</title>
-    {%load static%}
-    <link rel="stylesheet" href="{% static 'style1.css'%}">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'style1.css' %}">
+    <style>
+        .logout-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+
+        .logout-button button {
+            background-color: red;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .logout-button button:hover {
+            background-color: darkred;
+        }
+    </style>
 </head>
 
 <body>
     <div class="wrapper">
+        <div class="logout-button">
+            <form action="{% url 'login_page' %}" method="get">
+                <button type="submit">Logout</button>
+            </form>
+        </div>
         <div class="image-left">
-            <img src="{% static 'images1/male.avif'%}" alt="Male Doctor">
+            <img src="{% static 'images1/male.avif' %}" alt="Male Doctor">
         </div>
         <div class="container">
             <div class="header">
                 <div class="doctor-name">
-                    {{doctor}}
+                    {{ doctor }}
                 </div>
                 <div class="prescription-link">
                     <form action="{% url 'serve_prescription_form' doctor.id %}" method="get">
@@ -28,23 +53,37 @@
             </div>
             <div class="schedule">
                 <h2>Doctor Schedule</h2>
-                <ul>{% for s in schedules%}
-                    <li><span class="time-slot">{{s.schedule}}</span><span class="patient-name">{{s.patient}}</span>
+                <ul>
+                    {% for s in schedules %}
+                    <li><span class="time-slot">{{ s.schedule }}</span><span class="patient-name">{{ s.patient }}</span>
                     </li>
                     {% endfor %}
                 </ul>
+            </div>
+            <div class="patient-reports">
+                <h2>Patient Reports</h2>
+                <form method="get" action="{% url 'doctor_home' doctor.id %}">
+                    <label for="patient-select">Select Patient:</label>
+                    <select id="patient-select" name="patient_id">
+                        {% for patient in patients %}
+                        <option value="{{ patient.id }}">{{ patient.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <button type="submit">View Reports</button>
+                </form>
+                {% if reports %}
+                <ul>
+                    {% for report in reports %}
+                    <li>{{ report.date }}: {{ report.diagnosis }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
             </div>
         </div>
         <div class="image-right">
             <img src="{% static 'images1/female.avif' %}" alt="Female Doctor">
         </div>
     </div>
-    <!-- 
-    <script>
-        function generatePrescriptionLink() {
-            alert("Prescription link generated!");
-        }
-    </script> -->
 </body>
 
 </html>

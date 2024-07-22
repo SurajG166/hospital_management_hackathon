@@ -28,18 +28,16 @@
                 {{ form.as_table}}
             </table>
             <button type="submit">Submit</button>
-            <button type="button" onclick="goBack()">Go Back</button>
         </form>
-
+        <form action="{% url 'doctor_home' doctor_id %}" method="get">
+            {% csrf_token %}
+            <button type="submit" value="submit">Go Back</button>
+        </form>
 
 
     </div>
 
-    <script>
-        function goBack() {
-            location.href = 'http://127.0.0.1:8000/doctor_home/';
-        }
-    </script>
+
 </body>
 
 </html>

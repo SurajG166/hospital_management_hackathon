@@ -62,9 +62,11 @@
             </div>
             <div class="patient-reports">
                 <h2>Patient Reports</h2>
-                <form method="get" action="{% url 'doctor_home' doctor.id %}">
+                <form method="post" action="{% url 'doctor_home' doctor.id %}">
+                    {% csrf_token %}
                     <label for="patient-select">Select Patient:</label>
                     <select id="patient-select" name="patient_id">
+                        <option value="" disabled selected>Select Patient:</option>
                         {% for patient in patients %}
                         <option value="{{ patient.id }}">{{ patient.name }}</option>
                         {% endfor %}
@@ -74,7 +76,7 @@
                 {% if reports %}
                 <ul>
                     {% for report in reports %}
-                    <li>{{ report.date }}: {{ report.diagnosis }}</li>
+                    <li> <a href="{% url 'report_view' report.id %}">{{ report.date }}: {{ report.diagnosis }}</a></li>
                     {% endfor %}
                 </ul>
                 {% endif %}

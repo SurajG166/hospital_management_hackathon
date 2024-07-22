@@ -55,9 +55,26 @@ def patient_home(request, patient_id):
 
 
 def doctor_home(request, doctor_id=1):
+    reports = None
+    doctor = get_object_or_404(Doctor, id=doctor_id)
+    if request.method == "POST":
+        patient_id = request.POST.get("patient_id")
+        if patient_id:
+            selected_patient = get_object_or_404(Patient, id=patient_id)
+            reports = Report.objects.filter(doctor=doctor, patient=selected_patient)
     doctor = get_object_or_404(Doctor, id=doctor_id)
     schedules = Schedule.objects.filter(doctor=doctor)
-    return render(request, "doctor.html", {"doctor": doctor, "schedules": schedules})
+    patients = Patient.objects.all()
+    return render(
+        request,
+        "doctor.html",
+        {
+            "doctor": doctor,
+            "schedules": schedules,
+            "patients": patients,
+            "reports": reports,
+        },
+    )
 
 
 def hospital_home(request, hospital_id):
@@ -81,21 +98,6 @@ def serve_prescription_form(request, doctor_id):
     )
 
 
-def doctor_interface(request, doctor_id):
-    doctor = get_object_or_404(Doctor, id=doctor_id)
-    schedules = Schedule.objects.filter(doctor=doctor)
-    patients = Patient.objects.all()
-    reports = None
-
-    patient_id = request.GET.get("patient_id")
-    if patient_id:
-        selected_patient = get_object_or_404(Patient, id=patient_id)
-        reports = Report.objects.filter(doctor=doctor, patient=selected_patient)
-
-    context = {
-        "doctor": doctor,
-        "schedules": schedules,
-        "patients": patients,
-        "reports": reports,
-    }
-    return render(request, "doctor.html", context)
+def report_view(request, report_id):
+    report = Report.objects.get(id=report_id)
+    return render(request, "report.html", {"report": report})

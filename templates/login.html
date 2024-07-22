@@ -132,7 +132,7 @@
       <div class="modal-body">
         <h2 class="card-title"><b>MEDISYNC</b></h2>
         <h3 class="card-title"><b>LOGIN</b></h3>
-        <form action="" method="post" action="{%url 'validate_login'%}">
+        <form method="post" action="{%url 'validate_login'%}">
           {%csrf_token%}
           <input class="email-password" type="text" id="email" name="email" placeholder="Username" required />
           <input class="email-password" type="password" name="password" id="password" placeholder="Password" required />

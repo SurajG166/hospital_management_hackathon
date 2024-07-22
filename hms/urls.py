@@ -1,5 +1,5 @@
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path
 from . import views
 
 urlpatterns = [
@@ -10,7 +10,7 @@ urlpatterns = [
     path("doctor_home/<int:doctor_id>/", views.doctor_home, name="doctor_home"),
     path("hospital_home/<int:hospital_id>/", views.hospital_home, name="hospital_home"),
     path(
-        "prescription_form/",
+        "prescription_form/<int:doctor_id>/",
         views.serve_prescription_form,
         name="serve_prescription_form",
     ),

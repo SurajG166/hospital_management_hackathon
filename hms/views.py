@@ -20,7 +20,6 @@ def validate_login(request):
         username = request.POST.get("email")
         password = request.POST.get("password")
         login_type = request.POST.get("type")
-        debug_string = login_type + "  haha"
         if login_type == "Patient":
             try:
                 patient = Patient.objects.get(username=username, password=password)
@@ -47,7 +46,7 @@ def validate_login(request):
 
         else:
             messages.error(request, "Invalid login type selected.")
-            return render(request, "login.html", {"debug_string": debug_string})
+            return render(request, "login.html")
 
 
 def patient_home(request, patient_id):
@@ -65,12 +64,12 @@ def hospital_home(request, hospital_id):
     return render(request, "hospital_admin.html", {"hospital": hospital})
 
 
-def serve_prescription_form(request):
+def serve_prescription_form(request, doctor_id):
     if request.method == "POST":
         form = ReportForm(request.POST)
         if form.is_valid:
             form.save()
-            return redirect('doctor_home')
+            return redirect('doctor_home',doctor_id = doctor_id )
     else:
         form = ReportForm()
     patients = Patient.objects.all()

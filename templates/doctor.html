@@ -20,7 +20,7 @@
                     {{doctor}}
                 </div>
                 <div class="prescription-link">
-                    <form action="{% url 'serve_prescription_form' %}" method="get">
+                    <form action="{% url 'serve_prescription_form' doctor.id %}" method="get">
                         {% csrf_token %}
                         <button type="submit">Generate Prescription</button>
                     </form>

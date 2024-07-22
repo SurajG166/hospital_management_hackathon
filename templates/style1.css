@@ -1,0 +1,104 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #d5ead7;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 90%; /* Adjust as needed */
+    max-width: 1200px; /* Adjust as needed */
+    margin: 0 auto;
+}
+
+.image-left, .image-right {
+    flex: 1;
+    text-align: center;
+}
+
+.image-left img, .image-right img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.container {
+    flex: 2;
+    max-width: 800px;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.doctor-name {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+}
+
+.prescription-link button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.prescription-link button:hover {
+    background-color: #45a049;
+}
+
+.schedule h2 {
+    font-size: 22px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.schedule ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.schedule li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f9f9f9;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-left: 5px solid #4CAF50;
+    transition: background-color 0.3s ease;
+}
+
+.schedule li:hover {
+    background-color: #f1f1f1;
+}
+
+.time-slot {
+    font-weight: bold;
+    color: #333;
+}
+
+.patient-name {
+    color: #555;
+}

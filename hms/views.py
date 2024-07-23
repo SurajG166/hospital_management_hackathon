@@ -39,7 +39,7 @@ def validate_login(request):
         elif login_type == "Hospital":
             try:
                 hospital = Hospital.objects.get(username=username, password=password)
-                return redirect("hospital_home", hospital_id=hospital.id)
+                return redirect("/admin/")
             except Hospital.DoesNotExist:
                 messages.error(request, "Invalid login info: try again!")
                 return render(request, "login.html")

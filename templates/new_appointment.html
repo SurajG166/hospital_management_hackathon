@@ -4,7 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Appointment</title>
+    <title>Find Nearby Hospitals and Create Appointment</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.4.1/mapbox-gl.css' rel='stylesheet' />
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -19,7 +21,7 @@
 
         .container {
             width: 100%;
-            max-width: 500px;
+            max-width: 700px;
             margin: 20px;
             padding: 20px;
             background: #ffffff;
@@ -33,15 +35,6 @@
             color: #333;
             font-size: 22px;
             text-align: center;
-        }
-
-        .appointment-form {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
         }
 
         .form-group label {
@@ -79,23 +72,148 @@
             outline: none;
             box-shadow: 0 0 0 0.1rem rgba(38, 143, 255, 0.25);
         }
+
+        #hospital-nearby {
+            height: 400px;
+            /* Set a height for the map */
+        }
     </style>
 </head>
 
 <body>
     <div class="container">
-        <h1>Schedule Appointment</h1>
-        <form method="post" class="appointment-form">
-            {% csrf_token %}
-            {% for field in form %}
-            <div class="form-group">
-                {{ field.label_tag }}
-                {{ field }}
+        <h1>Find Nearby Hospitals and Create Appointment</h1>
+
+        <div class="card mt-3">
+            <div class="card-header">
+                Enter Address
             </div>
-            {% endfor %}
-            <button type="submit" class="btn-primary">Submit</button>
-        </form>
+            <div class="card-body">
+                <div class="form-group">
+                    <label for="address">Address</label>
+                    <input type="text" class="form-control" id="address" maxlength="200">
+                </div>
+            </div>
+        </div>
+
+        <div class="card mt-3">
+            <div class="card-header">
+                Nearby Hospitals
+            </div>
+            <div class="card-body">
+                <div id="hospital-nearby">
+                    <!-- Mapbox map will be here -->
+                </div>
+            </div>
+        </div>
+
+        <div class="card mt-3">
+            <div class="card-header">
+                Select Hospital
+            </div>
+            <div class="card-body">
+                <div class="form-group">
+                    <label for="hospital">Hospital</label>
+                    <select class="form-control" id="hospital">
+                        <!-- Options for hospitals will be added here dynamically -->
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mt-3">
+            <div class="card-header">
+                Schedule Appointment
+            </div>
+            <div class="card-body">
+                <form method="post" class="appointment-form">
+                    {% csrf_token %}
+                    {% for field in form %}
+                    <div class="form-group">
+                        {{ field.label_tag }}
+                        {{ field }}
+                    </div>
+                    {% endfor %}
+                    <button type="submit" class="btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
     </div>
+
+    <!-- jQuery and Bootstrap scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- Mapbox GL JS -->
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.4.1/mapbox-gl.js'></script>
+
+    <script>
+        mapboxgl.accessToken = 'pk.eyJ1IjoidWRheTIzIiwiYSI6ImNseXhjemRoMTFtejUyaXI0bGdrdWZpb2sifQ.5r-i-hpHald6KLighWZ2BQ';
+
+        var map = new mapboxgl.Map({
+            container: 'hospital-nearby',
+            style: 'mapbox://styles/mapbox/streets-v11',
+            center: [-74.5, 40], // Default center
+            zoom: 10
+        });
+
+        document.getElementById('address').addEventListener('change', function () {
+            var address = this.value;
+            geocodeAddress(address);
+        });
+
+        function geocodeAddress(address) {
+            fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(address)}.json?access_token=${mapboxgl.accessToken}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.features.length > 0) {
+                        var lng = data.features[0].geometry.coordinates[0];
+                        var lat = data.features[0].geometry.coordinates[1];
+                        map.setCenter([lng, lat]);
+                        findNearestHospitals(lng, lat);
+                    } else {
+                        console.log('Address not found');
+                    }
+                })
+                .catch(error => console.error('Error geocoding address:', error));
+        }
+
+        function findNearestHospitals(lng, lat) {
+            fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/hospital.json?proximity=${lng},${lat}&limit=10&access_token=${mapboxgl.accessToken}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.features.length > 0) {
+                        var hospitalSelect = document.getElementById('hospital');
+                        hospitalSelect.innerHTML = ''; // Clear previous options
+
+                        data.features.forEach(function (place) {
+                            var option = document.createElement('option');
+                            option.value = place.text;
+                            option.textContent = place.text;
+                            hospitalSelect.appendChild(option);
+
+                            var marker = new mapboxgl.Marker()
+                                .setLngLat(place.geometry.coordinates)
+                                .setPopup(new mapboxgl.Popup({ offset: 25 }).setText(place.text))
+                                .addTo(map);
+                        });
+                    } else {
+                        console.log('No hospitals found nearby');
+                    }
+                })
+                .catch(error => console.error('Error fetching hospitals:', error));
+        }
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function (position) {
+                map.setCenter([position.coords.longitude, position.coords.latitude]);
+                findNearestHospitals(position.coords.longitude, position.coords.latitude);
+            });
+        } else {
+            console.log('Geolocation is not supported by this browser.');
+        }
+    </script>
 </body>
 
 </html>

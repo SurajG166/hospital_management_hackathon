@@ -19,11 +19,18 @@
         <nav class="navbarmed">
             <a href="#">MEDISYNC</a>
         </nav>
-
-        <div class="emergency">
-            <!-- <div id="menubar" class="fas fa-bars"></div> -->
+        
+        <div class="emergency" onclick="redirectToEmergency()">
             <a href="#">EMERGENCY</a>
         </div>
+        <script>
+            function redirectToEmergency() {
+                // Replace with the actual URL you want to redirect to
+                var emergencyUrl = 'https://indianhelpline.com/bangalore';  // Example URL
+                window.location.href = emergencyUrl;
+            }
+        </script>
+
         <div class="login">
             <!-- <div id="menubar" class="fas fa-bars"></div> -->
             <a href="{% url 'login_page' %}">LOG IN</a>

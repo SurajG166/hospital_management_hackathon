@@ -14,5 +14,10 @@ urlpatterns = [
         views.serve_prescription_form,
         name="serve_prescription_form",
     ),
-    path("report/<int:report_id>", views.report_view, name = 'report_view'),
+    path("report/<int:report_id>", views.report_view, name="report_view"),
+    path(
+        "new_appointment/<int:patient_id>",
+        views.create_appointment,
+        name="new_appointment",
+    ),
 ]

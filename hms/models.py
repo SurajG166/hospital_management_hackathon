@@ -53,3 +53,15 @@ class Report(models.Model):
     def __str__(self):
         return f"Report for {self.patient.name} by {self.doctor.name} on {self.date}"
 
+class Appointment(models.Model):
+    doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
+    hospital = models.ForeignKey(Hospital, on_delete=models.CASCADE)
+    date = models.DateField()
+    symptoms = models.CharField(max_length=100)
+    emergency = models.BooleanField()
+
+    def __str__(self):
+        return (
+            f"Appointment for {self.doctor.name} by {self.patient.name} on {self.date} at {self.hospital.name}"
+        )

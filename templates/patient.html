@@ -1,1 +1,110 @@
-{{patient}}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Details</title>
+</head>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+    }
+
+    .header {
+        background-color: grey;
+        padding: 10px;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+    }
+
+    .header .logout-btn {
+        background-color: red;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+
+    .container {
+        width: 80%;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: white;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1,
+    h2 {
+        color: #333;
+    }
+
+    p {
+        font-size: 16px;
+        line-height: 1.5;
+    }
+
+    ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    ul li {
+        background-color: #f9f9f9;
+        margin: 10px 0;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+
+    .schedule-btn {
+        background-color: #28a745;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        border-radius: 5px;
+        font-size: 16px;
+        display: block;
+        margin: 20px 0;
+    }
+</style>
+
+<body>
+    <div class="header">
+        <form action="{% url 'login_page' %}" method="get">
+            {% csrf_token %}
+            <button class="logout-btn" type="submit">Logout</button>
+        </form>
+    </div>
+    <div class="container">
+        <h1>{{ patient.name }}</h1>
+        <p><strong>Age:</strong> {{ patient.age }}</p>
+        <p><strong>Condition:</strong> {{ patient.condition }}</p>
+        <p><strong>Contact:</strong> {{ patient.contact }}</p>
+        <p><strong>Address:</strong> {{ patient.address }}</p>
+        <h2>Previous Reports</h2>
+        <ul>
+            {% for report in reports %}
+            <li>
+                <strong>Date:</strong> {{ report.date }}<br>
+                <strong>Diagnosis:</strong> {{ report.diagnosis }}<br>
+                <strong>Prescription:</strong> {{ report.prescription }}
+            </li>
+            {% empty %}
+            <li>No reports available.</li>
+            {% endfor %}
+        </ul>
+            <form action=" {% url 'new_appointment' patient.id %}" method="post">
+                {% csrf_token %}
+            <button class="schedule-btn" type="submit">Schedule Appointment</button>
+            </form>
+    </div>
+</body>
+
+</html>

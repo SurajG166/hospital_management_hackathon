@@ -1,8 +1,9 @@
 from django.contrib import admin
-from .models import Hospital, Doctor, Patient, Schedule, Report
+from .models import Hospital, Doctor, Patient, Schedule, Report, Appointment
 
 admin.site.register(Hospital)
 admin.site.register(Doctor)
 admin.site.register(Schedule)
 admin.site.register(Patient)
 admin.site.register(Report)
+admin.site.register(Appointment)

@@ -34,7 +34,7 @@ def validate_login(request):
                 return redirect("doctor_home", doctor_id=doctor.id)
             except Doctor.DoesNotExist:
                 messages.error(request, "Invalid login info: try again!")
-                return render(request, "home.html")
+                return render(request, "login.html")
 
         elif login_type == "Hospital":
             try:
@@ -102,7 +102,6 @@ def serve_prescription_form(request, doctor_id):
 def report_view(request, report_id):
     report = Report.objects.get(id=report_id)
     return render(request, "report.html", {"report": report})
-
 
 
 def create_appointment(request, patient_id):
